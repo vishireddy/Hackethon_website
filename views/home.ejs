@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles/main.css?v=<%= assetVersion %>" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <%- include("partials/header") %>
+      <%- include("partials/flash") %>
+
+      <dialog id="poster-modal" class="poster-modal" aria-labelledby="poster-modal-title">
+        <div class="poster-modal-card">
+          <button type="button" class="icon-button poster-close" data-close-poster aria-label="Close">×</button>
+          <div class="poster-modal-shell">
+            <div class="poster-modal-copy">
+              <p class="eyebrow">Official Event Poster</p>
+              <h2 id="poster-modal-title">Venture Capital Hackathon 2026</h2>
+              <p class="muted-copy">
+                Organized by StudLyf. Hosted by Malla Reddy University – CSE Department. 24th–25th July 2026.
+              </p>
+              <div class="poster-modal-meta">
+                <span class="pill">Venue: Malla Reddy University</span>
+                <span class="pill pill-muted">24–25 July 2026</span>
+                <span class="pill">Team: 3–4 Members</span>
+                <span class="pill pill-muted">₹150 / Person</span>
+              </div>
+            </div>
+            <img
+              src="/images/ai-hackathon-poster.jpeg?v=<%= assetVersion %>"
+              alt="Venture Capital Hackathon official event poster"
+              class="poster-image"
+            />
+          </div>
+          <div class="poster-actions">
+            <button type="button" class="primary-button" data-close-poster>Continue to website</button>
+          </div>
+        </div>
+      </dialog>
+
+      <section class="hero hero-home">
+        <div class="hero-copy">
+          <p class="eyebrow">Innovate • Pitch • Invest • Impact</p>
+          <div class="hero-banner-pill">LIMITED TO 50 TEAMS ONLY</div>
+          <h1>Venture Capital Hackathon 2026</h1>
+          <p class="hero-text">
+            Build Ideas. Attract Capital. Create the Next Big Thing. — Official problem statement selection portal for the Venture Capital Hackathon at Malla Reddy University, CSE Department.
+          </p>
+          <div class="hero-meta-row">
+            <span class="hero-meta-item">Malla Reddy University</span>
+            <span class="hero-meta-separator"></span>
+            <span class="hero-meta-item">24–25 July 2026</span>
+            <span class="hero-meta-separator"></span>
+            <span class="hero-meta-item">Malla Reddy × StudLyf</span>
+          </div>
+          <section class="poster-facts-grid">
+            <article class="poster-fact-card poster-fact-card-venue">
+              <span class="poster-fact-label">Venue</span>
+              <strong>Malla Reddy University</strong>
+              <small>CSE Department</small>
+            </article>
+            <article class="poster-fact-card">
+              <span class="poster-fact-label">Dates</span>
+              <strong>24th – 25th July</strong>
+              <small>2026</small>
+            </article>
+            <article class="poster-fact-card">
+              <span class="poster-fact-label">Team Size</span>
+              <strong>3–4 Members</strong>
+              <small>Per team</small>
+            </article>
+            <article class="poster-fact-card poster-fact-card-final">
+              <span class="poster-fact-label">Registration Fee</span>
+              <strong>₹150 / Person</strong>
+              <small>Limited to 50 teams</small>
+            </article>
+          </section>
+          <section
+            class="countdown-card"
+            data-countdown
+            data-countdown-target="2026-07-24T09:00:00+05:30"
+          >
+            <div class="countdown-copy">
+              <p class="eyebrow">Hackathon Day Timer</p>
+              <h2>Countdown to launch day</h2>
+              <p class="countdown-text">
+                Live timer for the Venture Capital Hackathon final round. The countdown ends on 24 July 2026.
+              </p>
+            </div>
+            <div class="countdown-grid">
+              <article class="countdown-unit">
+                <span class="countdown-value" data-countdown-value="days">00</span>
+                <small>Days</small>
+              </article>
+              <article class="countdown-unit">
+                <span class="countdown-value" data-countdown-value="hours">00</span>
+                <small>Hours</small>
+              </article>
+              <article class="countdown-unit">
+                <span class="countdown-value" data-countdown-value="minutes">00</span>
+                <small>Minutes</small>
+              </article>
+              <article class="countdown-unit">
+                <span class="countdown-value" data-countdown-value="seconds">00</span>
+                <small>Seconds</small>
+              </article>
+            </div>
+            <p class="countdown-status" data-countdown-status>Countdown loading...</p>
+          </section>
+          <div class="hero-actions">
+            <% if (participant) { %>
+              <a href="#problem-board" class="primary-button hero-link">Choose Your Problem Statement</a>
+            <% } else { %>
+              <button type="button" class="primary-button hero-link hero-button" data-open-signup>
+                Signup / Login to Select
+              </button>
+            <% } %>
+            <div class="hero-note">
+              <% if (participantSelection) { %>
+                <strong>Selection Locked:</strong>
+                <span>Your team has already confirmed one problem statement.</span>
+              <% } else if (participant) { %>
+                <strong>Ready to choose:</strong>
+                <span>Your logged-in team can confirm one statement only.</span>
+              <% } else { %>
+                <strong>Selection Window:</strong>
+                <span><%= teamLimit %> teams per statement before it closes</span>
+              <% } %>
+            </div>
+          </div>
+          <div class="stat-grid">
+            <article class="stat-card">
+              <span>Active statements</span>
+              <strong><%= stats.problemCount %></strong>
+            </article>
+            <article class="stat-card">
+              <span>Total team picks</span>
+              <strong><%= stats.selectionCount %></strong>
+            </article>
+            <article class="stat-card">
+              <span>Selection limit</span>
+              <strong><%= teamLimit %> / problem</strong>
+            </article>
+          </div>
+        </div>
+
+        <aside class="hero-side-panel">
+          <article class="hero-poster-preview">
+            <div class="hero-poster-top">
+              <p class="eyebrow">Official Poster</p>
+            </div>
+            <img
+              src="/images/ai-hackathon-poster.jpeg?v=<%= assetVersion %>"
+              alt="Venture Capital Hackathon official event poster"
+              class="hero-poster-image"
+              loading="lazy"
+            />
+            <div class="hero-poster-summary " style="color:black">
+              <strong>Venture Capital Hackathon 2026</strong>
+              <span style="color:black">Malla Reddy University × StudLyf</span>
+              <span style="color:black">24–25 July 2026 · CSE Department</span>
+            </div>
+          </article>
+        </aside>
+      </section>
+
+      <section class="panel-members-section" style="display: flex; justify-content: center; padding: 2rem; margin: 2rem auto; max-width: 1200px;">
+        <img src="/images/panel-members.png" alt="Panel Members" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+      </section>
+
+      <section class="sponsors-card">
+        <div class="sponsors-header">
+          <p class="eyebrow sponsors-eyebrow">SPONSORS & PARTNERS</p>
+          <div class="sponsors-header-flex">
+            <h2>Backing Venture Capital Hackathon 2026</h2>
+            <p class="controls-copy">Our hackathon partners helping power the final round experience.</p>
+          </div>
+        </div>
+        
+        <div style="display: flex; justify-content: center; padding: 2rem 0;">
+          <img src="/images/sponsors.png" alt="Sponsors & Partners" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+        </div>
+      </section>
+
+      <!-- ── FEATURED INSTITUTIONS scroll strip ── -->
+      <section class="logo-strip-section" style="margin-top: 5rem;">
+        <div class="logo-strip-header">
+          <p class="eyebrow logo-strip-eyebrow">FEATURED INSTITUTIONS</p>
+          <h2 class="logo-strip-title">Participants from top universities across India</h2>
+        </div>
+        <div class="logo-strip-marquee" aria-label="Featured Institutions">
+          <div class="logo-strip-track" id="institutions-track">
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/iit h.webp"       alt="IIT Hyderabad"  loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/iit k.webp"       alt="IIT Kharagpur"  loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/iit-bombay.webp"  alt="IIT Bombay"     loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/iit-delhi.webp"   alt="IIT Delhi"      loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/iitm.webp"        alt="IIT Madras"     loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/iim k.webp"       alt="IIM Kozhikode"  loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/bits.webp"        alt="BITS Pilani"    loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/srm.webp"         alt="SRM University" loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/cbit.webp"        alt="CBIT"           loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/cmr.webp"         alt="CMR"            loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/griet.webp"       alt="GRIET"          loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/mru.webp"         alt="Malla Reddy University" loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/vishnu.webp"      alt="Vishnu Institute" loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/vjim.webp"        alt="VJIM"           loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/woxen.webp"       alt="Woxen University" loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Featured Institutions/anuraguni.webp"   alt="Anurag University" loading="lazy" /></div>
+            <!-- duplicate for seamless loop -->
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Featured Institutions/iit h.webp"       alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Featured Institutions/iit k.webp"       alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Featured Institutions/iit-bombay.webp"  alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Featured Institutions/iit-delhi.webp"   alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Featured Institutions/iitm.webp"        alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Featured Institutions/iim k.webp"       alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Featured Institutions/bits.webp"        alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Featured Institutions/srm.webp"         alt="" loading="lazy" /></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TRUSTED BY PEOPLE FROM scroll strip ── -->
+      <section class="logo-strip-section logo-strip-section--alt">
+        <div class="logo-strip-header">
+          <p class="eyebrow logo-strip-eyebrow">TRUSTED BY PEOPLE FROM</p>
+          <h2 class="logo-strip-title">Professionals &amp; alumni from leading organisations</h2>
+        </div>
+        <div class="logo-strip-marquee" aria-label="Trusted by people from">
+          <div class="logo-strip-track logo-strip-track--reverse" id="trusted-track">
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/ibm.webp"      alt="IBM"          loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/infosys.webp"  alt="Infosys"      loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/tcs.webp"      alt="TCS"          loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/optum.webp"    alt="Optum"        loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/stanford.webp" alt="Stanford"     loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/wharton.webp"  alt="Wharton"      loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/iim b.webp"    alt="IIM Bangalore" loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/isb.webp"      alt="ISB"          loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/lic.webp"      alt="LIC"          loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/angel one.webp" alt="Angel One"   loading="lazy" /></div>
+            <div class="logo-strip-item"><img src="/images/Trusted by People From/isha.webp"     alt="Isha Foundation" loading="lazy" /></div>
+            <!-- duplicate for seamless loop -->
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Trusted by People From/ibm.webp"      alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Trusted by People From/infosys.webp"  alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Trusted by People From/tcs.webp"      alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Trusted by People From/optum.webp"    alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Trusted by People From/stanford.webp" alt="" loading="lazy" /></div>
+            <div class="logo-strip-item" aria-hidden="true"><img src="/images/Trusted by People From/wharton.webp"  alt="" loading="lazy" /></div>
+          </div>
+        </div>
+      </section>
+
+      <% if (participant) { %>
+        <section class="controls-card account-section" id="participant-access">
+          <div class="controls-head">
+            <div>
+              <p class="eyebrow">Participant Account</p>
+              <h2><%= participant.teamName %></h2>
+            </div>
+            <p class="controls-copy">Your team account is active. Problem selection is tied to this login and cannot be changed after confirmation.</p>
+          </div>
+
+          <div class="account-grid">
+            <article class="account-card">
+              <span class="account-label">Team Name</span>
+              <strong><%= participant.teamName %></strong>
+            </article>
+            <article class="account-card">
+              <span class="account-label">Email Address</span>
+              <strong><%= participant.emailAddress %></strong>
+            </article>
+            <article class="account-card">
+              <span class="account-label">Mobile Number</span>
+              <strong><%= participant.mobileNumber %></strong>
+            </article>
+            <% if (participantSelection) { %>
+              <article class="account-card">
+                <span class="account-label">Selected Problem</span>
+                <strong><%= participantSelection.title %></strong>
+              </article>
+              <article class="account-card">
+                <span class="account-label">Domain</span>
+                <strong><%= participantSelection.domain %></strong>
+              </article>
+              <article class="account-card">
+                <span class="account-label">Problem Code</span>
+                <strong><%= participantSelection.problemCode || "Not assigned" %></strong>
+              </article>
+              <article class="account-card">
+                <span class="account-label">Confirmed At</span>
+                <strong><%= participantSelection.createdAtFormatted || "Saved" %></strong>
+              </article>
+            <% } %>
+          </div>
+
+          <% if (participantSelection) { %>
+            <div class="locked-selection-card">
+              <div class="locked-selection-copy">
+                <p class="eyebrow">Confirmed Selection</p>
+                <h3><%= participantSelection.title %></h3>
+                <p><%= participantSelection.problemStatement %></p>
+              </div>
+              <div class="locked-selection-meta">
+                <% if (participantSelection.problemCode) { %>
+                  <span class="pill">Code #<%= participantSelection.problemCode %></span>
+                <% } %>
+                <span class="pill"><%= participantSelection.domain %></span>
+                <span class="pill pill-danger">Editing disabled</span>
+              </div>
+            </div>
+          <% } else { %>
+            <div class="locked-selection-card locked-selection-card-ready">
+              <div class="locked-selection-copy">
+                <p class="eyebrow">Selection Status</p>
+                <h3>Your team can select one problem statement.</h3>
+                <p>Once you confirm a problem, the choice is locked and the edit option stays disabled.</p>
+              </div>
+              <a href="#problem-board" class="primary-button hero-link">Browse Open Statements</a>
+            </div>
+          <% } %>
+        </section>
+      <% } %>
+
+      <section class="controls-card" id="problem-board">
+        <div class="controls-head">
+          <div>
+            <p class="eyebrow">Problem Board</p>
+            <h2>Browse available problem statements</h2>
+          </div>
+          <p class="controls-copy">Use search and filters to find the right fit for your team.</p>
+        </div>
+        <div class="toolbar">
+          <label class="search-field">
+            <span class="search-label">Search</span>
+            <input id="problem-search" type="search" placeholder="Try AI, fintech, fraud detection, classroom, security..." />
+          </label>
+          <label class="select-field">
+            <span class="search-label">Availability</span>
+            <select id="availability-filter">
+              <option value="all">All problems</option>
+              <option value="open">Available only</option>
+              <option value="full">Full only</option>
+            </select>
+          </label>
+        </div>
+        <div class="chip-row">
+          <button class="filter-chip active" data-domain-filter="All" type="button">All domains</button>
+          <% domains.forEach((domain) => { %>
+            <button class="filter-chip" data-domain-filter="<%= domain %>" type="button"><%= domain %></button>
+          <% }) %>
+        </div>
+      </section>
+
+      <main id="problem-groups" class="problem-groups">
+        <% let globalIndex = 1; %>
+        <% Object.entries(problemGroups).forEach(([domain, items]) => { %>
+          <section class="domain-group" data-domain-group="<%= domain %>">
+            <div class="domain-heading">
+              <div>
+                <p class="eyebrow">Domain</p>
+                <h2><%= domain %></h2>
+              </div>
+              <span class="domain-count"><%= items.length %> problem<%= items.length === 1 ? "" : "s" %></span>
+            </div>
+            <div class="problem-grid">
+              <% items.forEach((problem) => { %>
+                <article
+                  class="problem-card <%= problem.isFull ? "full" : "" %>"
+                  data-problem-card
+                  data-domain="<%= problem.domain.toLowerCase() %>"
+                  data-search="<%= problem.searchText %>"
+                  data-status="<%= problem.isFull ? "full" : "open" %>"
+                >
+                  <div class="problem-row-main">
+                    <div class="problem-card-heading">
+                      <div class="problem-top">
+                        <span class="pill"><%= problem.domain %></span>
+                        <span class="pill pill-<%= problem.isFull ? "danger" : "success" %>"><%= problem.isFull ? "Unavailable" : "Open" %></span>
+                      </div>
+
+                      <h3 class="problem-brief-title"><%= globalIndex %>. <%= problem.title %></h3>
+                      <% globalIndex++; %>
+                    </div>
+
+                    <p class="problem-lead" style="color:black"><%= problem.problemStatement || problem.description %></p>
+                  </div>
+
+                  <aside class="problem-row-aside">
+                    <div class="selection-panel">
+                      <span class="selection-panel-label">Selection</span>
+                      <% if (participantSelection && Number(participantSelection.problemId) === Number(problem.id)) { %>
+                        <strong>Selected by your team</strong>
+                        <p>Your team has already locked this statement. No edit option is available after confirmation.</p>
+                      <% } else if (participantSelection) { %>
+                        <strong>Your selection is locked</strong>
+                        <p>Your team already confirmed another statement, so this one can no longer be chosen.</p>
+                      <% } else if (problem.isFull) { %>
+                        <strong>This statement is full</strong>
+                        <p>All available slots are already taken.</p>
+                      <% } else if (!participant) { %>
+                        <strong>Login required</strong>
+                        <p>Participants must signup or login before they can confirm any problem statement.</p>
+                      <% } else { %>
+                        <strong>Ready for your team</strong>
+                        <p>Review the summary and confirm your team in one short step.</p>
+                      <% } %>
+                    </div>
+
+                    <div class="availability-block availability-block-row">
+                      <div class="availability-copy">
+                        <strong><%= problem.teamCount %>/<%= teamLimit %> teams selected</strong>
+                        <span><%= problem.isFull ? "All slots filled for this statement" : `${problem.availableSlots} slots left before it closes` %></span>
+                      </div>
+                      <div class="progress-track">
+                        <% var progressPct = Math.min(100, Math.round((problem.teamCount / teamLimit) * 100)); %>
+                        <div class="progress-fill" data-fill="<%= progressPct %>"></div>
+                      </div>
+                    </div>
+
+                    <% if (problem.isFull) { %>
+                      <button type="button" class="primary-button select-trigger" disabled>
+                        Slots Filled
+                      </button>
+                    <% } else if (!participant) { %>
+                      <button type="button" class="primary-button select-trigger" data-open-login>
+                        Login to Select
+                      </button>
+                    <% } else if (participantSelection && Number(participantSelection.problemId) === Number(problem.id)) { %>
+                      <button type="button" class="primary-button select-trigger" disabled>
+                        Selected by Your Team
+                      </button>
+                    <% } else if (participantSelection) { %>
+                      <button type="button" class="primary-button select-trigger" disabled>
+                        Selection Locked
+                      </button>
+                    <% } else { %>
+                      <button
+                        type="button"
+                        class="primary-button select-trigger"
+                        <%= problem.isFull ? "disabled" : "" %>
+                        data-open-selection
+                        data-problem-id="<%= problem.id %>"
+                        data-problem-title="<%= problem.title %>"
+                        data-problem-domain="<%= problem.domain %>"
+                        data-problem-count="<%= problem.teamCount %>"
+                      >
+                        <%= problem.isFull ? "Slots Filled" : "Select Problem" %>
+                      </button>
+                    <% } %>
+
+                    <p class="selection-help">
+                      <% if (participantSelection && Number(participantSelection.problemId) === Number(problem.id)) { %>
+                        This is your team’s final saved choice.
+                      <% } else if (participantSelection) { %>
+                        Your team already selected another problem statement.
+                      <% } else if (problem.isFull) { %>
+                        Choose another open statement from the list.
+                      <% } else if (!participant) { %>
+                        Open your participant account first, then return here to confirm a choice.
+                      <% } else { %>
+                        Best for teams who are ready to confirm their choice now.
+                      <% } %>
+                    </p>
+                  </aside>
+                </article>
+              <% }) %>
+            </div>
+          </section>
+        <% }) %>
+      </main>
+
+      <p id="empty-state" class="empty-state" <%= problems.length === 0 ? "" : "hidden" %>>No problem statements match your current filters.</p>
+    </div>
+
+    <dialog id="selection-modal" class="modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">Final Confirmation</p>
+            <h2 id="modal-title">Select a problem</h2>
+          </div>
+          <button type="button" class="icon-button" data-close-modal aria-label="Close">×</button>
+        </div>
+
+        <div class="modal-meta">
+          <span id="modal-domain" class="pill"></span>
+          <span id="modal-count" class="pill pill-muted"></span>
+        </div>
+
+        <form method="post" action="/select" class="stack-form">
+          <input type="hidden" name="problemId" id="modal-problem-id" />
+          <div class="confirm-summary">
+            <span class="account-label">Team</span>
+            <strong><%= participant ? participant.teamName : "" %></strong>
+            <span class="muted-copy">Email: <%= participant ? participant.emailAddress : "" %></span>
+            <span class="muted-copy">Mobile: <%= participant ? participant.mobileNumber : "" %></span>
+          </div>
+          <p class="muted-copy">Once you confirm this selection, editing will be disabled for this participant account.</p>
+
+          <div class="action-row">
+            <button type="submit" class="primary-button">Confirm and Lock Selection</button>
+            <button type="button" class="secondary-button" data-close-modal>Cancel</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <% if (!participant) { %>
+      <dialog
+        id="signup-modal"
+        class="modal auth-modal"
+        <%= flash ? 'data-auth-auto-open="true"' : "" %>
+      >
+        <div class="modal-card auth-modal-card">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow">Participant Signup</p>
+              <h2>Create your participant account</h2>
+            </div>
+            <button type="button" class="icon-button" data-close-signup aria-label="Close">×</button>
+          </div>
+
+          <section class="auth-panel active">
+            <p class="muted-copy">Create your participant account, then choose one final problem statement.</p>
+            <form method="post" action="/participant/signup" class="stack-form">
+              <label>
+                Team Name
+                <input type="text" name="teamName" placeholder="Team Nova" required />
+              </label>
+              <label>
+                Email Address
+                <input type="email" name="emailAddress" placeholder="team@example.com" required />
+              </label>
+              <label>
+                Mobile Number
+                <input type="tel" name="mobileNumber" placeholder="9876543210" maxlength="10" required />
+              </label>
+              <label>
+                Password
+                <input type="password" name="password" placeholder="Minimum 6 characters" required />
+              </label>
+              <label>
+                Confirm Password
+                <input type="password" name="confirmPassword" placeholder="Re-enter password" required />
+              </label>
+              <button type="submit" class="primary-button">Create Account</button>
+            </form>
+            <div class="auth-inline-switch">
+              <span class="muted-copy">Already registered?</span>
+              <button type="button" class="text-button" data-open-login>Open Login</button>
+            </div>
+          </section>
+        </div>
+      </dialog>
+
+      <dialog
+        id="login-modal"
+        class="modal auth-modal"
+        <%= flash ? 'data-login-auto-open="true"' : "" %>
+      >
+        <div class="modal-card auth-modal-card">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow">Participant Login</p>
+              <h2>Log in to your participant account</h2>
+            </div>
+            <button type="button" class="icon-button" data-close-login aria-label="Close">×</button>
+          </div>
+
+          <section class="auth-panel active">
+            <p class="muted-copy">Log in with your registered mobile number to continue your team selection.</p>
+            <form method="post" action="/participant/login" class="stack-form">
+              <label>
+                Mobile Number
+                <input type="tel" name="mobileNumber" placeholder="9876543210" maxlength="10" required />
+              </label>
+              <label>
+                Password
+                <input type="password" name="password" placeholder="Enter password" required />
+              </label>
+              <button type="submit" class="primary-button">Login</button>
+            </form>
+            <div class="auth-inline-switch">
+              <span class="muted-copy">New participant?</span>
+              <button type="button" class="text-button" data-open-signup>Open Signup</button>
+            </div>
+          </section>
+        </div>
+      </dialog>
+    <% } %>
+
+    <% if (settings && (settings.whatsapp_url || settings.linkedin_url || settings.instagram_url)) { %>
+      <section class="socials-section">
+        <div class="socials-container">
+          <h2>Join our socials</h2>
+          <p class="socials-tagline">Learn Build Evolve<br>with us</p>
+          <div class="social-icons">
+            <% if (settings.whatsapp_url) { %>
+              <a href="<%= settings.whatsapp_url %>" target="_blank" rel="noopener noreferrer" class="social-icon-button" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+              </a>
+            <% } %>
+            <% if (settings.linkedin_url) { %>
+              <a href="<%= settings.linkedin_url %>" target="_blank" rel="noopener noreferrer" class="social-icon-button" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+            <% } %>
+            <% if (settings.instagram_url) { %>
+              <a href="<%= settings.instagram_url %>" target="_blank" rel="noopener noreferrer" class="social-icon-button" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              </a>
+            <% } %>
+          </div>
+        </div>
+      </section>
+    <% } %>
+
+    <footer class="site-footer">
+      <p>Venture Capital Hackathon 2026 — Malla Reddy University, CSE Department. Organized by StudLyf.</p>
+      <span>&copy; <%= currentYear %> Venture Capital Hackathon · Malla Reddy University</span>
+    </footer>
+
+    <script src="/scripts/app.js?v=<%= assetVersion %>"></script>
+    <script>
+      document.querySelectorAll('.progress-fill[data-fill]').forEach(function(el) {
+        el.style.width = el.getAttribute('data-fill') + '%';
+      });
+    </script>
+  </body>
+</html>

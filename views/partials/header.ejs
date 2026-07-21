@@ -1,0 +1,42 @@
+<header class="site-header">
+  <a href="/" class="brand brand-duo">
+    <span class="brand-stack">
+      <span class="brand-highlight">Hosted By</span>
+      <span class="brand-logos">
+        <img src="/images/Malla_reddy_University_logo.png?v=<%= assetVersion %>" alt="Malla Reddy University logo" class="header-logo" />
+        <span class="brand-x">×</span>
+        <img src="/images/studlyf-logo.jpeg?v=<%= assetVersion %>" alt="Studlyf logo" class="header-logo" />
+      </span>
+    </span>
+    <span class="brand-copy">
+      <strong>Venture Capital Hackathon</strong>
+      <small>Malla Reddy University · CSE Department</small>
+    </span>
+  </a>
+
+  <% if (admin) { %>
+    <nav class="site-nav">
+      <a href="/admin">Admin Dashboard</a>
+      <form method="post" action="/admin/logout">
+        <button type="submit" class="nav-button">Logout</button>
+      </form>
+    </nav>
+  <% } else if (participant) { %>
+    <nav class="site-nav">
+      <span class="nav-badge">Team: <%= participant.teamName %></span>
+      <a href="#participant-access">Profile</a>
+      <form method="post" action="/participant/logout">
+        <button type="submit" class="nav-button">Logout</button>
+      </form>
+    </nav>
+  <% } else { %>
+    <nav class="site-nav">
+      <div class="header-status">
+        <span class="header-dot"></span>
+        <span>Participant selection is live</span>
+      </div>
+      <button type="button" class="nav-button nav-link-button" data-open-login>Login</button>
+      <button type="button" class="nav-button" data-open-signup>Signup</button>
+    </nav>
+  <% } %>
+</header>
