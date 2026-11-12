@@ -61,6 +61,15 @@
             <button type="submit" class="primary-button">Upload Problem Statement</button>
           </form>
         </div>
+        <div class="inline-editor-popover" data-inline-editor hidden>
+          <strong data-inline-editor-title>Edit homepage content</strong>
+          <input type="text" data-inline-editor-input />
+          <div class="inline-editor-actions">
+            <button type="button" class="secondary-button" data-inline-editor-cancel>Cancel</button>
+            <button type="button" class="primary-button" data-inline-editor-save>Save draft</button>
+          </div>
+          <p class="muted-copy" data-inline-editor-status></p>
+        </div>
       </section>
 
       <section class="dashboard-grid">
@@ -218,6 +227,179 @@
         <% } %>
       </section>
 
+      <section class="panel-card homepage-editor">
+        <div class="panel-card-heading">
+          <div>
+            <p class="panel-kicker">Homepage Editor</p>
+            <h2>Click + to edit the public home page</h2>
+          </div>
+          <span class="homepage-editor-actions">
+            <a class="secondary-button" href="#countdown-fields">Edit timer settings</a>
+            <span class="muted-copy">Existing images stay unchanged until you replace them.</span>
+          </span>
+        </div>
+        <%
+          const draftValue = (key, fallback) =>
+            settings[`${key}_draft`] !== undefined ? settings[`${key}_draft`] : fallback;
+        %>
+        <div class="homepage-preview">
+          <article class="homepage-preview-header">
+            <span class="editor-target editor-target-logo">
+              <button type="button" class="editor-plus" data-inline-file="college_logo" aria-label="Replace college logo">+</button>
+              <img data-preview-for="college_logo" src="<%= draftValue('college_logo', '/images/Malla_reddy_University_logo.png') %>" alt="College logo" />
+            </span>
+            <span>×</span>
+            <img src="/images/studlyf-logo.jpeg" alt="Studlyf logo" />
+            <div>
+              <span class="editor-target editor-target-hackathon">
+                <strong><%= draftValue('hackathon_name', 'Hackathon name') %></strong>
+                <button type="button" class="editor-plus" data-inline-field="hackathon_name" aria-label="Edit hackathon name">+</button>
+              </span>
+              <span class="editor-target editor-target-college">
+                <small><%= draftValue('college_name', 'College name') %></small>
+                <button type="button" class="editor-plus" data-inline-field="college_name" aria-label="Edit college name">+</button>
+              </span>
+            </div>
+          </article>
+          <article class="homepage-preview-hero">
+            <div>
+              <span class="editor-target editor-target-hero-eyebrow">
+                <small><%= draftValue('hero_eyebrow', 'Innovate • Pitch • Invest • Impact') %></small>
+                <button type="button" class="editor-plus" data-inline-field="hero_eyebrow" aria-label="Edit hero eyebrow">+</button>
+              </span>
+              <span class="editor-target editor-target-capacity">
+                <strong><%= draftValue('capacity_label', 'TOP 20 TEAMS SHORTLISTED FOR THE FINALE') %></strong>
+                <button type="button" class="editor-plus" data-inline-field="capacity_label" aria-label="Edit capacity label">+</button>
+              </span>
+              <span class="editor-target editor-target-hero-title">
+                <strong><%= draftValue('hackathon_name', 'Hackathon name') %></strong>
+                <button type="button" class="editor-plus" data-inline-field="hackathon_name" aria-label="Edit hero title">+</button>
+              </span>
+              <span class="editor-target editor-target-hero-description">
+                <p><%= draftValue('hero_description', 'Hero description') %></p>
+                <button type="button" class="editor-plus" data-inline-field="hero_description" aria-label="Edit hero description">+</button>
+              </span>
+              <span class="editor-target editor-target-hero-meta">
+                <span class="editor-target editor-target-meta-line">
+                  <span><%= draftValue('organised_by', 'Organised by') %> </span>
+                  <span><%= draftValue('college_name', 'College name') %></span>
+                  <button type="button" class="editor-plus" data-inline-field="college_name" aria-label="Edit college name in organiser line">+</button>
+                </span>
+                <span class="editor-target editor-target-meta-line">
+                  <span><%= draftValue('event_dates', 'Event dates') %></span>
+                  <button type="button" class="editor-plus" data-inline-field="event_dates" aria-label="Edit event dates">+</button>
+                </span>
+                <span class="editor-target editor-target-meta-line">
+                  <span><%= draftValue('college_name', 'College name') %> </span>
+                  <span><%= draftValue('brand_separator', '×') %></span>
+                  <button type="button" class="editor-plus" data-inline-field="brand_separator" aria-label="Edit separator">+</button>
+                  <span> </span>
+                  <span><%= draftValue('studlyf_name', 'Studlyf') %></span>
+                  <button type="button" class="editor-plus" data-inline-field="studlyf_name" aria-label="Edit Studlyf name">+</button>
+                </span>
+              </span>
+              <div class="homepage-preview-facts">
+                <span class="editor-target editor-target-fact">
+                  <span><%= draftValue('venue_label', 'Venue') %>:</span>
+                  <b><%= draftValue('venue', draftValue('college_name', 'Venue')) %></b>
+                  <button type="button" class="editor-plus" data-inline-field="venue" aria-label="Edit venue">+</button>
+                </span>
+                <span class="editor-target editor-target-fact">
+                  <span><%= draftValue('dates_label', 'Dates') %>:</span>
+                  <b><%= draftValue('event_dates', 'Dates') %></b>
+                  <button type="button" class="editor-plus" data-inline-field="event_dates" aria-label="Edit dates">+</button>
+                </span>
+                <span class="editor-target editor-target-fact">
+                  <span><%= draftValue('team_size_label', 'Team Size') %>:</span>
+                  <b><%= draftValue('team_size', 'Team size') %></b>
+                  <button type="button" class="editor-plus" data-inline-field="team_size" aria-label="Edit team size">+</button>
+                </span>
+                <span class="editor-target editor-target-fact">
+                  <span><%= draftValue('registration_fee_label', 'Registration Fee') %>:</span>
+                  <b><%= draftValue('registration_fee', 'Fee') %></b>
+                  <button type="button" class="editor-plus" data-inline-field="registration_fee" aria-label="Edit registration fee">+</button>
+                </span>
+              </div>
+            </div>
+            <span class="editor-target editor-target-poster">
+              <img data-preview-for="poster" src="<%= draftValue('poster', '/images/ai-hackathon-poster.jpeg') %>" alt="Event poster" />
+              <button type="button" class="editor-plus" data-inline-file="poster" aria-label="Replace event poster">+</button>
+              <small class="image-dimensions" data-dimensions-for="poster">Current size: 853 × 1280 px · Recommended: 853 × 1280 px</small>
+            </span>
+          </article>
+          <article class="homepage-preview-countdown">
+            <span class="editor-target editor-target-countdown-title">
+              <strong><%= draftValue('countdown_title', 'Countdown to launch day') %></strong>
+              <button type="button" class="editor-plus" data-inline-field="countdown_title" aria-label="Edit countdown section">+</button>
+            </span>
+            <span class="editor-target editor-target-countdown-description">
+              <span><%= draftValue('countdown_description', 'Countdown description') %></span>
+              <button type="button" class="editor-plus" data-inline-field="countdown_description" aria-label="Edit countdown description">+</button>
+            </span>
+            <span class="editor-target editor-target-countdown-status">
+              <span><%= draftValue('timer_running_status', 'Timer running message') %></span>
+              <button type="button" class="editor-plus" data-inline-field="timer_running_status" aria-label="Edit timer running message">+</button>
+            </span>
+          </article>
+          <article class="homepage-preview-actions">
+            <strong>Signup / Login to Select</strong>
+            <span><%= draftValue('selection_window_label', 'Selection Window') %>: <%= teamLimit %> teams per statement</span>
+          </article>
+          <article class="homepage-preview-stats">
+            <span>Active statements <b>0</b></span>
+            <span>Total team picks <b>0</b></span>
+            <span>Selection limit <b><%= teamLimit %> / problem</b></span>
+          </article>
+          <article class="homepage-preview-image">
+            <span class="editor-target editor-target-image">
+              <img data-preview-for="panel_image" src="<%= draftValue('panel_image', '/images/panel-members.png') %>" alt="Second poster" />
+              <button type="button" class="editor-plus" data-inline-file="panel_image" aria-label="Replace second poster">+</button>
+              <small class="image-dimensions" data-dimensions-for="panel_image">Current size: 1920 × 860 px · Recommended: 1920 × 860 px</small>
+            </span>
+            <span>Second poster</span>
+          </article>
+          <article class="homepage-preview-image">
+            <span class="editor-target editor-target-image">
+              <img data-preview-for="sponsors_image" src="<%= draftValue('sponsors_image', '/images/sponsors.png') %>" alt="Sponsors" />
+              <button type="button" class="editor-plus" data-inline-file="sponsors_image" aria-label="Replace sponsors image">+</button>
+              <small class="image-dimensions" data-dimensions-for="sponsors_image">Current size: 1920 × 315 px · Recommended: 1920 × 315 px</small>
+            </span>
+            <span>Sponsors image</span>
+          </article>
+          <footer class="homepage-preview-footer">
+            <span class="editor-target editor-footer-branding">
+              <span>
+                <b><%= draftValue('hackathon_name', 'Hackathon') %></b>
+                <button type="button" class="editor-plus" data-inline-field="hackathon_name" aria-label="Edit footer hackathon name">+</button>
+              </span>
+              <span> — </span>
+              <span>
+                <b><%= draftValue('college_name', 'College') %></b>
+                <button type="button" class="editor-plus" data-inline-field="college_name" aria-label="Edit footer college name">+</button>
+              </span>
+              <span>. </span>
+              <span class="editor-target">
+                <b><%= draftValue('organised_by', 'Organised by') %></b>
+                <button type="button" class="editor-plus" data-inline-field="organised_by" aria-label="Edit organised by text">+</button>
+              </span>
+              <span> <%= draftValue('studlyf_name', 'Studlyf') %>.</span>
+            </span>
+            <span class="editor-footer-copyright">
+              <span>&copy; <%= currentYear %> </span>
+              <span class="editor-target">
+                <b><%= draftValue('hackathon_name', 'Hackathon') %></b>
+                <button type="button" class="editor-plus" data-inline-field="hackathon_name" aria-label="Edit copyright hackathon name">+</button>
+              </span>
+              <span> · </span>
+              <span class="editor-target">
+                <b><%= draftValue('college_name', 'College') %></b>
+                <button type="button" class="editor-plus" data-inline-field="college_name" aria-label="Edit copyright college name">+</button>
+              </span>
+            </span>
+          </footer>
+        </div>
+      </section>
+
       <section class="panel-card site-settings-panel">
         <div class="panel-card-heading">
           <div>
@@ -225,20 +407,161 @@
             <h2>Site Settings</h2>
           </div>
         </div>
-        <form method="post" action="/admin/settings/update" class="stack-form">
+        <form id="homepage-settings-form" method="post" action="/admin/settings/update" class="stack-form" enctype="multipart/form-data">
+          <p class="muted-copy">Branding changes are saved as a draft. The Studlyf logo remains fixed.</p>
+          <div class="homepage-inline-fields" aria-hidden="true">
+          <label id="branding-fields">
+            Hackathon name
+            <input type="text" name="hackathon_name" value="<%= settings.hackathon_name_draft || settings.hackathon_name_active || '' %>" required maxlength="160" />
+          </label>
           <label>
-            WhatsApp URL
+            College name
+            <input type="text" name="college_name" value="<%= settings.college_name_draft || settings.college_name_active || '' %>" required maxlength="160" />
+          </label>
+          <label id="hero-fields">
+            Event dates <span class="muted-copy">(optional)</span>
+            <input type="text" name="event_dates" value="<%= settings.event_dates_draft !== undefined ? settings.event_dates_draft : (settings.event_dates_active || '') %>" maxlength="120" placeholder="e.g. 24–25 July 2026" />
+          </label>
+          <label>
+            Hero description <span class="muted-copy">(optional)</span>
+            <textarea name="hero_description" rows="3" maxlength="500" placeholder="Short description shown in the hero section"><%= settings.hero_description_draft || settings.hero_description_active || '' %></textarea>
+          </label>
+          <label>
+            Venue <span class="muted-copy">(optional)</span>
+            <input type="text" name="venue" value="<%= settings.venue_draft !== undefined ? settings.venue_draft : (settings.venue_active || '') %>" maxlength="160" placeholder="Event venue" />
+          </label>
+          <label>
+            Team size <span class="muted-copy">(optional)</span>
+            <input type="text" name="team_size" value="<%= settings.team_size_draft !== undefined ? settings.team_size_draft : (settings.team_size_active || '') %>" maxlength="80" placeholder="e.g. 3–4 Members" />
+          </label>
+          <label>
+            Registration fee <span class="muted-copy">(optional)</span>
+            <input type="text" name="registration_fee" value="<%= settings.registration_fee_draft !== undefined ? settings.registration_fee_draft : (settings.registration_fee_active || '') %>" maxlength="80" placeholder="e.g. ₹150 / Person" />
+          </label>
+          <label>
+            Hero eyebrow <span class="muted-copy">(optional)</span>
+            <input type="text" name="hero_eyebrow" value="<%= settings.hero_eyebrow_draft !== undefined ? settings.hero_eyebrow_draft : (settings.hero_eyebrow_active || '') %>" maxlength="160" placeholder="Innovate • Pitch • Invest • Impact" />
+          </label>
+          <label>
+            Capacity label <span class="muted-copy">(optional)</span>
+            <input type="text" name="capacity_label" value="<%= settings.capacity_label_draft !== undefined ? settings.capacity_label_draft : (settings.capacity_label_active || '') %>" maxlength="120" placeholder="TOP 20 TEAMS SHORTLISTED FOR THE FINALE" />
+          </label>
+          <label id="countdown-fields">
+            Countdown title <span class="muted-copy">(optional)</span>
+            <input type="text" name="countdown_title" value="<%= settings.countdown_title_draft !== undefined ? settings.countdown_title_draft : (settings.countdown_title_active || '') %>" maxlength="160" placeholder="Countdown to launch day" />
+          </label>
+          <label>
+            Countdown description <span class="muted-copy">(optional)</span>
+            <textarea name="countdown_description" rows="2" maxlength="300" placeholder="Text shown below the countdown title"><%= settings.countdown_description_draft || settings.countdown_description_active || '' %></textarea>
+          </label>
+          <label>
+            Venue card label <span class="muted-copy">(optional)</span>
+            <input type="text" name="venue_label" value="<%= settings.venue_label_draft || settings.venue_label_active || '' %>" maxlength="80" />
+          </label>
+          <label>
+            Dates card label <span class="muted-copy">(optional)</span>
+            <input type="text" name="dates_label" value="<%= settings.dates_label_draft || settings.dates_label_active || '' %>" maxlength="80" />
+          </label>
+          <label>
+            Team size card label <span class="muted-copy">(optional)</span>
+            <input type="text" name="team_size_label" value="<%= settings.team_size_label_draft || settings.team_size_label_active || '' %>" maxlength="80" />
+          </label>
+          <label>
+            Registration fee card label <span class="muted-copy">(optional)</span>
+            <input type="text" name="registration_fee_label" value="<%= settings.registration_fee_label_draft || settings.registration_fee_label_active || '' %>" maxlength="80" />
+          </label>
+          <label>
+            Per-team label <span class="muted-copy">(optional)</span>
+            <input type="text" name="per_team_label" value="<%= settings.per_team_label_draft || settings.per_team_label_active || '' %>" maxlength="80" />
+          </label>
+          <label>
+            Capacity sublabel <span class="muted-copy">(optional)</span>
+            <input type="text" name="limited_label" value="<%= settings.limited_label_draft || settings.limited_label_active || '' %>" maxlength="120" />
+          </label>
+          <label>
+            Timer label <span class="muted-copy">(optional)</span>
+            <input type="text" name="timer_label" value="<%= settings.timer_label_draft || settings.timer_label_active || '' %>" maxlength="120" />
+          </label>
+          <label>
+            Timer status <span class="muted-copy">(optional)</span>
+            <input type="text" name="timer_status" value="<%= settings.timer_status_draft || settings.timer_status_active || '' %>" maxlength="200" />
+          </label>
+          <label id="timer-running-fields">
+            Timer running message <span class="muted-copy">(optional)</span>
+            <input type="text" name="timer_running_status" value="<%= settings.timer_running_status_draft !== undefined ? settings.timer_running_status_draft : (settings.timer_running_status_active || '') %>" maxlength="240" placeholder="Timer running for the final round." />
+            <span class="muted-copy">Shown below the countdown while the timer is still running.</span>
+          </label>
+          <label>
+            Selection window label <span class="muted-copy">(optional)</span>
+            <input type="text" name="selection_window_label" value="<%= settings.selection_window_label_draft || settings.selection_window_label_active || '' %>" maxlength="120" />
+          </label>
+          <label>
+            Sponsors heading <span class="muted-copy">(optional)</span>
+            <input type="text" name="sponsors_heading" value="<%= settings.sponsors_heading_draft || settings.sponsors_heading_active || '' %>" maxlength="160" />
+          </label>
+          <label>
+            Sponsors description <span class="muted-copy">(optional)</span>
+            <textarea name="sponsors_description" rows="2" maxlength="300"><%= settings.sponsors_description_draft || settings.sponsors_description_active || '' %></textarea>
+          </label>
+          <label>
+            College logo
+            <input type="file" name="college_logo" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" />
+            <span class="muted-copy">PNG, JPG, JPEG, or WebP up to 2 MB. Leave empty to keep the current college logo.</span>
+          </label>
+          <label id="poster-fields">
+            Event poster <span class="muted-copy">(required to publish)</span>
+            <input type="file" name="poster" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" />
+            <span class="muted-copy">PNG, JPG, JPEG, or WebP up to 2 MB. Leave empty to keep the current poster; an existing poster is required for publishing.</span>
+          </label>
+          <label>
+            Second poster
+            <input type="file" name="panel_image" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" />
+            <span class="muted-copy">Replace the panel-members section image. Leave empty to keep the current image.</span>
+          </label>
+          <label id="sponsors-fields">
+            Sponsors image
+            <input type="file" name="sponsors_image" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" />
+            <span class="muted-copy">Replace the sponsors section image. Leave empty to keep the current image.</span>
+          </label>
+          <label>
+            Footer organiser text
+            <input type="text" name="organised_by" value="<%= settings.organised_by_draft !== undefined ? settings.organised_by_draft : (settings.organised_by_active || 'Organised by') %>" maxlength="80" placeholder="Organised by" />
+          </label>
+          <label>
+            Studlyf display name
+            <input type="text" name="studlyf_name" value="<%= settings.studlyf_name_draft !== undefined ? settings.studlyf_name_draft : (settings.studlyf_name_active || 'Studlyf') %>" maxlength="80" placeholder="Studlyf" />
+          </label>
+          <label>
+            College and Studlyf separator
+            <input type="text" name="brand_separator" value="<%= settings.brand_separator_draft !== undefined ? settings.brand_separator_draft : (settings.brand_separator_active || '×') %>" maxlength="12" placeholder="×" />
+          </label>
+          </div>
+          <label>
+            Countdown target <span class="muted-copy">(IST)</span>
+            <input type="datetime-local" name="countdown_target" value="<%= (settings.countdown_target_draft || settings.countdown_target_active || '2026-11-29T09:00:00+05:30').slice(0, 16) %>" />
+            <span class="muted-copy">The timer uses this date and time after the draft is published.</span>
+          </label>
+          <label>
+            WhatsApp URL <span class="muted-copy">(optional)</span>
             <input type="url" name="whatsapp_url" value="<%= settings.whatsapp_url || '' %>" placeholder="https://wa.me/..." />
           </label>
           <label>
-            LinkedIn URL
+            LinkedIn URL <span class="muted-copy">(optional)</span>
             <input type="url" name="linkedin_url" value="<%= settings.linkedin_url || '' %>" placeholder="https://linkedin.com/in/..." />
           </label>
           <label>
-            Instagram URL
+            Instagram URL <span class="muted-copy">(optional)</span>
             <input type="url" name="instagram_url" value="<%= settings.instagram_url || '' %>" placeholder="https://instagram.com/..." />
           </label>
-          <button type="submit" class="primary-button">Save Settings</button>
+          <button type="submit" class="primary-button">Save Branding Draft</button>
+        </form>
+        <form method="post" action="/admin/settings/publish" class="inline-form">
+          <button type="submit" class="secondary-button">Publish Branding</button>
+          <span class="muted-copy">Published: <%= settings.hackathon_name_active || 'Venture Capital Hackathon' %> · <%= settings.college_name_active || 'Malla Reddy University' %></span>
+        </form>
+        <form method="post" action="/admin/settings/revert" class="inline-form">
+          <button type="submit" class="secondary-button" onclick="return confirm('Revert all unpublished draft changes to the currently published values?')">Revert Draft</button>
+          <span class="muted-copy">Discard unpublished edits and restore the published values.</span>
         </form>
       </section>
 
@@ -311,5 +634,87 @@
       </section>
     </div>
     <script src="/scripts/app.js?v=<%= assetVersion %>"></script>
+    <script>
+      (() => {
+        const form = document.querySelector("#homepage-settings-form");
+        const popover = document.querySelector("[data-inline-editor]");
+        const input = popover?.querySelector("[data-inline-editor-input]");
+        const title = popover?.querySelector("[data-inline-editor-title]");
+        const status = popover?.querySelector("[data-inline-editor-status]");
+        let activeField = null;
+        let activeFile = null;
+
+        if (!form || !popover || !input) return;
+
+        const showEditor = (button, fieldName) => {
+          activeField = fieldName;
+          activeFile = null;
+          const field = form.elements[fieldName];
+          title.textContent = `Edit ${fieldName.replaceAll("_", " ")}`;
+          input.type = "text";
+          input.value = field?.value || "";
+          input.hidden = false;
+          status.textContent = "Changes are saved as a draft and published separately.";
+          popover.hidden = false;
+          (button.closest("article, footer") || button.parentElement).appendChild(popover);
+          input.focus();
+          input.select();
+        };
+
+        const showFilePicker = (button, fieldName) => {
+          activeField = null;
+          activeFile = fieldName;
+          const fileInput = form.elements[fieldName];
+          if (!fileInput) return;
+          title.textContent = `Replace ${fieldName.replaceAll("_", " ")}`;
+          input.hidden = true;
+          status.textContent = "Choose a replacement image. The current image stays until you save the draft.";
+          popover.hidden = false;
+          (button.closest("article, footer") || button.parentElement).appendChild(popover);
+          fileInput.click();
+        };
+
+        document.querySelectorAll("[data-inline-field]").forEach((button) => {
+          button.addEventListener("click", () => showEditor(button, button.dataset.inlineField));
+        });
+        document.querySelectorAll("[data-inline-file]").forEach((button) => {
+          button.addEventListener("click", () => showFilePicker(button, button.dataset.inlineFile));
+        });
+
+        form.querySelectorAll('input[type="file"]').forEach((fileInput) => {
+          fileInput.addEventListener("change", () => {
+            if (!fileInput.files[0]) return;
+            const preview = document.querySelector(`[data-preview-for="${fileInput.name}"]`);
+            if (preview) preview.src = URL.createObjectURL(fileInput.files[0]);
+            const dimensions = document.querySelector(`[data-dimensions-for="${fileInput.name}"]`);
+            if (dimensions) {
+              const image = new Image();
+              image.onload = () => {
+                dimensions.textContent = `Selected size: ${image.naturalWidth} × ${image.naturalHeight} px`;
+              };
+              image.src = URL.createObjectURL(fileInput.files[0]);
+            }
+            status.textContent = `${fileInput.files[0].name} selected. Click Save draft to keep it.`;
+          });
+        });
+
+        popover.querySelector("[data-inline-editor-cancel]").addEventListener("click", () => {
+          popover.hidden = true;
+          activeField = null;
+          activeFile = null;
+        });
+
+        popover.querySelector("[data-inline-editor-save]").addEventListener("click", () => {
+          if (activeField) {
+            form.elements[activeField].value = input.value;
+          }
+          if (activeFile && !form.elements[activeFile].files[0]) {
+            status.textContent = "Choose an image first.";
+            return;
+          }
+          form.requestSubmit();
+        });
+      })();
+    </script>
   </body>
 </html>

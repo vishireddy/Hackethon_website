@@ -249,6 +249,7 @@ function initializeCountdown() {
   }
 
   const targetValue = countdown.dataset.countdownTarget;
+  const runningStatus = countdown.dataset.countdownRunningStatus;
   const status = countdown.querySelector("[data-countdown-status]");
   const valueNodes = {
     days: countdown.querySelector('[data-countdown-value="days"]'),
@@ -292,7 +293,7 @@ function initializeCountdown() {
     setCountdownValues(valueNodes, { days, hours, minutes, seconds });
 
     if (status) {
-      status.textContent = "Timer running for the Venture Capital Hackathon final round on 24 July 2026.";
+      status.textContent = runningStatus || status.textContent;
     }
 
     return false;

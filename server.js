@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const XLSX = require("xlsx");
 const { Pool } = require("pg");
 const session = require("express-session");
+const multer = require("multer");
 
 const pgPool = new Pool({ connectionString: process.env.DATABASE_URL });
 const pool = {
@@ -91,6 +92,24 @@ const PARTNERS = {
 };
 
 const DEFAULT_PROBLEM_CATALOG = [];
+
+const logoUpload = multer({
+  storage: multer.diskStorage({
+    destination: path.join(__dirname, "public", "uploads"),
+    filename: (req, file, callback) => {
+      const extension = path.extname(file.originalname).toLowerCase();
+      callback(null, `${file.fieldname}-${Date.now()}${extension}`);
+    },
+  }),
+  limits: { fileSize: 2 * 1024 * 1024 },
+  fileFilter: (req, file, callback) => {
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+    if (!allowedTypes.includes(file.mimetype)) {
+      return callback(new Error("College logo must be a PNG, JPG, JPEG, or WebP image."));
+    }
+    return callback(null, true);
+  },
+});
 
 // pool already defined above
 
@@ -224,18 +243,83 @@ async function fetchAllSelections() {
 
 async function ensureSettingsTable() {
   const defaultSettings = [
-    { key: "whatsapp_url", value: "#" },
-    { key: "linkedin_url", value: "#" },
-    { key: "instagram_url", value: "#" },
+    { key: "whatsapp_url", value: "" },
+    { key: "linkedin_url", value: "" },
+    { key: "instagram_url", value: "" },
+    { key: "hackathon_name_active", value: "Venture Capital Hackathon" },
+    { key: "hackathon_name_draft", value: "Venture Capital Hackathon" },
+    { key: "college_name_active", value: "Malla Reddy University" },
+    { key: "college_name_draft", value: "Malla Reddy University" },
+    { key: "department_active", value: "CSE Department" },
+    { key: "department_draft", value: "CSE Department" },
+    { key: "event_dates_active", value: "24–25 July 2026" },
+    { key: "event_dates_draft", value: "24–25 July 2026" },
+    { key: "hero_description_active", value: "Build Ideas. Attract Capital. Create the Next Big Thing." },
+    { key: "hero_description_draft", value: "Build Ideas. Attract Capital. Create the Next Big Thing." },
+    { key: "venue_active", value: "Malla Reddy University" },
+    { key: "venue_draft", value: "Malla Reddy University" },
+    { key: "team_size_active", value: "3–4 Members" },
+    { key: "team_size_draft", value: "3–4 Members" },
+    { key: "registration_fee_active", value: "₹150 / Person" },
+    { key: "registration_fee_draft", value: "₹150 / Person" },
+    { key: "hero_eyebrow_active", value: "Innovate • Pitch • Invest • Impact" },
+    { key: "hero_eyebrow_draft", value: "Innovate • Pitch • Invest • Impact" },
+    { key: "capacity_label_active", value: "TOP 20 TEAMS SHORTLISTED FOR THE FINALE" },
+    { key: "capacity_label_draft", value: "TOP 20 TEAMS SHORTLISTED FOR THE FINALE" },
+    { key: "countdown_title_active", value: "Countdown to launch day" },
+    { key: "countdown_title_draft", value: "Countdown to launch day" },
+    { key: "countdown_description_active", value: "Live timer for the final round." },
+    { key: "countdown_description_draft", value: "Live timer for the final round." },
+    { key: "countdown_target_active", value: "2026-11-29T09:00:00+05:30" },
+    { key: "countdown_target_draft", value: "2026-11-29T09:00:00+05:30" },
+    { key: "venue_label_active", value: "Venue" },
+    { key: "venue_label_draft", value: "Venue" },
+    { key: "dates_label_active", value: "Dates" },
+    { key: "dates_label_draft", value: "Dates" },
+    { key: "team_size_label_active", value: "Team Size" },
+    { key: "team_size_label_draft", value: "Team Size" },
+    { key: "registration_fee_label_active", value: "Registration Fee" },
+    { key: "registration_fee_label_draft", value: "Registration Fee" },
+    { key: "per_team_label_active", value: "Per team" },
+    { key: "per_team_label_draft", value: "Per team" },
+    { key: "limited_label_active", value: "Top 20 teams shortlisted for the finale" },
+    { key: "limited_label_draft", value: "Top 20 teams shortlisted for the finale" },
+    { key: "timer_label_active", value: "Hackathon Day Timer" },
+    { key: "timer_label_draft", value: "Hackathon Day Timer" },
+    { key: "timer_status_active", value: "Hackathon day is here. Best of luck to all participants." },
+    { key: "timer_status_draft", value: "Hackathon day is here. Best of luck to all participants." },
+    { key: "timer_running_status_active", value: "Timer running for the Venture Capital Hackathon final round on 24 July 2026." },
+    { key: "timer_running_status_draft", value: "Timer running for the Venture Capital Hackathon final round on 24 July 2026." },
+    { key: "selection_window_label_active", value: "Selection Window" },
+    { key: "selection_window_label_draft", value: "Selection Window" },
+    { key: "sponsors_heading_active", value: "Backing the hackathon" },
+    { key: "sponsors_heading_draft", value: "Backing the hackathon" },
+    { key: "sponsors_description_active", value: "Our hackathon partners helping power the final round experience." },
+    { key: "sponsors_description_draft", value: "Our hackathon partners helping power the final round experience." },
+    { key: "organised_by_active", value: "Organised by" },
+    { key: "organised_by_draft", value: "Organised by" },
+    { key: "studlyf_name_active", value: "Studlyf" },
+    { key: "studlyf_name_draft", value: "Studlyf" },
+    { key: "brand_separator_active", value: "×" },
+    { key: "brand_separator_draft", value: "×" },
+    { key: "college_logo_active", value: "/images/Malla_reddy_University_logo.png" },
+    { key: "college_logo_draft", value: "/images/Malla_reddy_University_logo.png" },
+    { key: "poster_active", value: "/images/ai-hackathon-poster.jpeg" },
+    { key: "poster_draft", value: "/images/ai-hackathon-poster.jpeg" },
+    { key: "panel_image_active", value: "/images/panel-members.png" },
+    { key: "panel_image_draft", value: "/images/panel-members.png" },
+    { key: "sponsors_image_active", value: "/images/sponsors.png" },
+    { key: "sponsors_image_draft", value: "/images/sponsors.png" },
   ];
   for (const { key, value } of defaultSettings) {
     try {
       await pool.query("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?) ON CONFLICT (setting_key) DO NOTHING", [key, value]);
-      await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = ? AND (setting_value = '' OR setting_value IS NULL)", [value, key]);
+      await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = ? AND (setting_value = '' OR setting_value IS NULL OR setting_value = '#')", [value, key]);
     } catch (error) {
       console.warn("Failed to insert setting", key, error.message);
     }
   }
+  await pool.query("UPDATE settings SET setting_value = '' WHERE setting_key IN ('department_active', 'department_draft')");
 }
 
 async function fetchSettings() {
@@ -635,8 +719,10 @@ app.use((req, res, next) => {
 app.get("/", async (req, res, next) => {
   try {
     const publicData = await fetchPublicData(req.session.participant?.id);
+    const hackathonName = publicData.settings.hackathon_name_active || "Venture Capital Hackathon";
+    const collegeName = publicData.settings.college_name_active || "Malla Reddy University";
     res.render("home", {
-      title: "Venture Capital Hackathon 2026 — Malla Reddy University",
+      title: `${hackathonName} — ${collegeName}`,
       partners: PARTNERS,
       ...publicData,
     });
@@ -1236,14 +1322,183 @@ app.get("/health", async (req, res) => {
   }
 });
 
-app.post("/admin/settings/update", requireAdmin, async (req, res, next) => {
+app.post(
+  "/admin/settings/update",
+  requireAdmin,
+  logoUpload.fields([
+    { name: "college_logo", maxCount: 1 },
+    { name: "poster", maxCount: 1 },
+    { name: "panel_image", maxCount: 1 },
+    { name: "sponsors_image", maxCount: 1 },
+  ]),
+  async (req, res, next) => {
   try {
-    const { whatsapp_url, linkedin_url, instagram_url } = req.body;
+    const {
+      whatsapp_url,
+      linkedin_url,
+      instagram_url,
+      hackathon_name,
+      college_name,
+      event_dates,
+      hero_description,
+      venue,
+      team_size,
+      registration_fee,
+      hero_eyebrow,
+      capacity_label,
+      countdown_title,
+      countdown_description,
+      countdown_target,
+      venue_label,
+      dates_label,
+      team_size_label,
+      registration_fee_label,
+      per_team_label,
+      limited_label,
+      timer_label,
+      timer_status,
+      timer_running_status,
+      selection_window_label,
+      sponsors_heading,
+      sponsors_description,
+      organised_by,
+      studlyf_name,
+      brand_separator,
+    } = req.body;
 
     await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'whatsapp_url'", [whatsapp_url || ""]);
     await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'linkedin_url'", [linkedin_url || ""]);
     await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'instagram_url'", [instagram_url || ""]);
+    await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'hackathon_name_draft'", [
+      String(hackathon_name || "").trim() || "Venture Capital Hackathon",
+    ]);
+    await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'college_name_draft'", [
+      String(college_name || "").trim() || "Malla Reddy University",
+    ]);
+    await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'event_dates_draft'", [
+      String(event_dates || "").trim(),
+    ]);
+    for (const [key, value] of Object.entries({
+      hero_description,
+      venue,
+      team_size,
+      registration_fee,
+      hero_eyebrow,
+      capacity_label,
+      countdown_title,
+      countdown_description,
+      countdown_target,
+      venue_label,
+      dates_label,
+      team_size_label,
+      registration_fee_label,
+      per_team_label,
+      limited_label,
+      timer_label,
+      timer_status,
+      timer_running_status,
+      selection_window_label,
+      sponsors_heading,
+      sponsors_description,
+      organised_by,
+      studlyf_name,
+      brand_separator,
+    })) {
+      const normalizedValue =
+        key === "countdown_target" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(String(value || "").trim())
+          ? `${String(value).trim()}:00+05:30`
+          : String(value || "").trim();
+      await pool.query(`UPDATE settings SET setting_value = ? WHERE setting_key = '${key}_draft'`, [
+        normalizedValue,
+      ]);
+    }
+    if (req.files?.college_logo?.[0]) {
+      await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'college_logo_draft'", [
+        `/uploads/${req.files.college_logo[0].filename}`,
+      ]);
+    }
+    if (req.files?.poster?.[0]) {
+      await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'poster_draft'", [
+        `/uploads/${req.files.poster[0].filename}`,
+      ]);
+    }
+    if (req.files?.panel_image?.[0]) {
+      await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'panel_image_draft'", [
+        `/uploads/${req.files.panel_image[0].filename}`,
+      ]);
+    }
+    if (req.files?.sponsors_image?.[0]) {
+      await pool.query("UPDATE settings SET setting_value = ? WHERE setting_key = 'sponsors_image_draft'", [
+        `/uploads/${req.files.sponsors_image[0].filename}`,
+      ]);
+    }
 
+    setFlash(req, "success", "Draft site branding saved. Publish it when ready.");
+    res.redirect("/admin");
+  } catch (error) {
+    next(error);
+  }
+  }
+);
+
+app.post("/admin/settings/publish", requireAdmin, async (req, res, next) => {
+  try {
+    for (const setting of ["hackathon_name", "college_name", "event_dates", "hero_description", "venue", "team_size", "registration_fee", "hero_eyebrow", "capacity_label", "countdown_title", "countdown_description", "countdown_target", "venue_label", "dates_label", "team_size_label", "registration_fee_label", "per_team_label", "limited_label", "timer_label", "timer_status", "timer_running_status", "selection_window_label", "sponsors_heading", "sponsors_description", "organised_by", "studlyf_name", "brand_separator", "college_logo", "poster", "panel_image", "sponsors_image"]) {
+      await pool.query(
+        "UPDATE settings SET setting_value = (SELECT setting_value FROM settings WHERE setting_key = ?) WHERE setting_key = ?",
+        [`${setting}_draft`, `${setting}_active`]
+      );
+    }
+    setFlash(req, "success", "Site branding published to the home page.");
+    res.redirect("/admin");
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post("/admin/settings/revert", requireAdmin, async (req, res, next) => {
+  const settings = [
+    "hackathon_name",
+    "college_name",
+    "event_dates",
+    "hero_description",
+    "venue",
+    "team_size",
+    "registration_fee",
+    "hero_eyebrow",
+    "capacity_label",
+    "countdown_title",
+    "countdown_description",
+    "countdown_target",
+    "venue_label",
+    "dates_label",
+    "team_size_label",
+    "registration_fee_label",
+    "per_team_label",
+    "limited_label",
+    "timer_label",
+    "timer_status",
+    "timer_running_status",
+    "selection_window_label",
+    "sponsors_heading",
+    "sponsors_description",
+    "organised_by",
+    "studlyf_name",
+    "brand_separator",
+    "college_logo",
+    "poster",
+    "panel_image",
+    "sponsors_image",
+  ];
+
+  try {
+    for (const setting of settings) {
+      await pool.query(
+        "UPDATE settings SET setting_value = (SELECT setting_value FROM settings WHERE setting_key = ?) WHERE setting_key = ?",
+        [`${setting}_active`, `${setting}_draft`]
+      );
+    }
+    setFlash(req, "success", "Unpublished draft changes were reverted.");
     res.redirect("/admin");
   } catch (error) {
     next(error);
@@ -1259,6 +1514,7 @@ app.use((error, req, res, next) => {
 });
 
 async function startServer() {
+  await fs.mkdir(path.join(__dirname, "public", "uploads"), { recursive: true });
   await initializeDatabase();
   await ensureSettingsTable();
   await ensureProblemBriefColumns();

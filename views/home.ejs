@@ -17,20 +17,20 @@
           <div class="poster-modal-shell">
             <div class="poster-modal-copy">
               <p class="eyebrow">Official Event Poster</p>
-              <h2 id="poster-modal-title">Venture Capital Hackathon 2026</h2>
+              <h2 id="poster-modal-title"><%= settings.hackathon_name_active || 'Venture Capital Hackathon' %></h2>
               <p class="muted-copy">
-                Organized by StudLyf. Hosted by Malla Reddy University – CSE Department. 24th–25th July 2026.
+                <%= settings.organised_by_active || 'Organised by' %> <%= settings.college_name_active || 'College' %>. In association with <%= settings.studlyf_name_active || 'Studlyf' %><% if (settings.event_dates_active) { %>. <%= settings.event_dates_active %>.<% } %>
               </p>
               <div class="poster-modal-meta">
-                <span class="pill">Venue: Malla Reddy University</span>
-                <span class="pill pill-muted">24–25 July 2026</span>
-                <span class="pill">Team: 3–4 Members</span>
-                <span class="pill pill-muted">₹150 / Person</span>
+                <span class="pill"><%= settings.venue_label_active || 'Venue' %>: <%= settings.venue_active || settings.college_name_active || 'College' %></span>
+                <% if (settings.event_dates_active) { %><span class="pill pill-muted"><%= settings.dates_label_active || 'Dates' %>: <%= settings.event_dates_active %></span><% } %>
+                <span class="pill"><%= settings.team_size_label_active || 'Team Size' %>: <%= settings.team_size_active || 'Team size to be announced' %></span>
+                <span class="pill pill-muted"><%= settings.registration_fee_label_active || 'Registration Fee' %>: <%= settings.registration_fee_active || 'Registration fee to be announced' %></span>
               </div>
             </div>
             <img
-              src="/images/ai-hackathon-poster.jpeg?v=<%= assetVersion %>"
-              alt="Venture Capital Hackathon official event poster"
+              src="<%= settings.poster_active || '/images/ai-hackathon-poster.jpeg' %>?v=<%= assetVersion %>"
+              alt="<%= settings.hackathon_name_active || 'Hackathon' %> official event poster"
               class="poster-image"
             />
           </div>
@@ -42,72 +42,38 @@
 
       <section class="hero hero-home">
         <div class="hero-copy">
-          <p class="eyebrow">Innovate • Pitch • Invest • Impact</p>
-          <div class="hero-banner-pill">LIMITED TO 50 TEAMS ONLY</div>
-          <h1>Venture Capital Hackathon 2026</h1>
+          <p class="eyebrow"><%= settings.hero_eyebrow_active || 'Innovate • Pitch • Invest • Impact' %></p>
+          <div class="hero-banner-pill"><%= settings.capacity_label_active || 'TOP 20 TEAMS SHORTLISTED FOR THE FINALE' %></div>
+          <h1><%= settings.hackathon_name_active || 'Venture Capital Hackathon' %></h1>
           <p class="hero-text">
-            Build Ideas. Attract Capital. Create the Next Big Thing. — Official problem statement selection portal for the Venture Capital Hackathon at Malla Reddy University, CSE Department.
+            <%= settings.hero_description_active || 'Build Ideas. Attract Capital. Create the Next Big Thing.' %> — Official problem statement selection portal for the <%= settings.hackathon_name_active || 'hackathon' %> at <%= settings.college_name_active || 'the college' %>.
           </p>
           <div class="hero-meta-row">
-            <span class="hero-meta-item">Malla Reddy University</span>
-            <span class="hero-meta-separator"></span>
-            <span class="hero-meta-item">24–25 July 2026</span>
-            <span class="hero-meta-separator"></span>
-            <span class="hero-meta-item">Malla Reddy × StudLyf</span>
+            <span class="hero-meta-item"><%= settings.organised_by_active || 'Organised by' %> <%= settings.college_name_active || 'College' %></span>
+            <span class="hero-meta-separator hero-meta-center-dot">·</span>
+            <span class="hero-meta-item"><%= settings.event_dates_active || 'Dates to be announced' %></span>
+            <span class="hero-meta-separator hero-meta-center-dot">·</span>
+            <span class="hero-meta-item">In association with <%= settings.studlyf_name_active || 'Studlyf' %></span>
           </div>
           <section class="poster-facts-grid">
             <article class="poster-fact-card poster-fact-card-venue">
-              <span class="poster-fact-label">Venue</span>
-              <strong>Malla Reddy University</strong>
-              <small>CSE Department</small>
+              <span class="poster-fact-label"><%= settings.venue_label_active || 'Venue' %></span>
+              <strong><%= settings.venue_active || settings.college_name_active || 'College' %></strong>
             </article>
             <article class="poster-fact-card">
-              <span class="poster-fact-label">Dates</span>
-              <strong>24th – 25th July</strong>
-              <small>2026</small>
+              <span class="poster-fact-label"><%= settings.dates_label_active || 'Dates' %></span>
+              <strong><%= settings.event_dates_active || 'Dates to be announced' %></strong>
             </article>
             <article class="poster-fact-card">
-              <span class="poster-fact-label">Team Size</span>
-              <strong>3–4 Members</strong>
-              <small>Per team</small>
+              <span class="poster-fact-label"><%= settings.team_size_label_active || 'Team Size' %></span>
+              <strong><%= settings.team_size_active || 'Team size to be announced' %></strong>
+              <small><%= settings.per_team_label_active || 'Per team' %></small>
             </article>
             <article class="poster-fact-card poster-fact-card-final">
-              <span class="poster-fact-label">Registration Fee</span>
-              <strong>₹150 / Person</strong>
-              <small>Limited to 50 teams</small>
+              <span class="poster-fact-label"><%= settings.registration_fee_label_active || 'Registration Fee' %></span>
+              <strong><%= settings.registration_fee_active || 'Registration fee to be announced' %></strong>
+              <small><%= settings.limited_label_active || 'Top 20 teams shortlisted for the finale' %></small>
             </article>
-          </section>
-          <section
-            class="countdown-card"
-            data-countdown
-            data-countdown-target="2026-07-24T09:00:00+05:30"
-          >
-            <div class="countdown-copy">
-              <p class="eyebrow">Hackathon Day Timer</p>
-              <h2>Countdown to launch day</h2>
-              <p class="countdown-text">
-                Live timer for the Venture Capital Hackathon final round. The countdown ends on 24 July 2026.
-              </p>
-            </div>
-            <div class="countdown-grid">
-              <article class="countdown-unit">
-                <span class="countdown-value" data-countdown-value="days">00</span>
-                <small>Days</small>
-              </article>
-              <article class="countdown-unit">
-                <span class="countdown-value" data-countdown-value="hours">00</span>
-                <small>Hours</small>
-              </article>
-              <article class="countdown-unit">
-                <span class="countdown-value" data-countdown-value="minutes">00</span>
-                <small>Minutes</small>
-              </article>
-              <article class="countdown-unit">
-                <span class="countdown-value" data-countdown-value="seconds">00</span>
-                <small>Seconds</small>
-              </article>
-            </div>
-            <p class="countdown-status" data-countdown-status>Countdown loading...</p>
           </section>
           <div class="hero-actions">
             <% if (participant) { %>
@@ -125,7 +91,7 @@
                 <strong>Ready to choose:</strong>
                 <span>Your logged-in team can confirm one statement only.</span>
               <% } else { %>
-                <strong>Selection Window:</strong>
+                <strong><%= settings.selection_window_label_active || 'Selection Window' %>:</strong>
                 <span><%= teamLimit %> teams per statement before it closes</span>
               <% } %>
             </div>
@@ -152,35 +118,70 @@
               <p class="eyebrow">Official Poster</p>
             </div>
             <img
-              src="/images/ai-hackathon-poster.jpeg?v=<%= assetVersion %>"
-              alt="Venture Capital Hackathon official event poster"
+              src="<%= settings.poster_active || '/images/ai-hackathon-poster.jpeg' %>?v=<%= assetVersion %>"
+              alt="<%= settings.hackathon_name_active || 'Hackathon' %> official event poster"
               class="hero-poster-image"
               loading="lazy"
             />
             <div class="hero-poster-summary " style="color:black">
-              <strong>Venture Capital Hackathon 2026</strong>
-              <span style="color:black">Malla Reddy University × StudLyf</span>
-              <span style="color:black">24–25 July 2026 · CSE Department</span>
+              <strong><%= settings.hackathon_name_active || 'Venture Capital Hackathon' %></strong>
+              <span style="color:black"><%= settings.organised_by_active || 'Organised by' %> <%= settings.college_name_active || 'College' %></span>
+              <span style="color:black"><%= settings.college_name_active || 'College' %> <%= settings.brand_separator_active || '×' %> <%= settings.studlyf_name_active || 'Studlyf' %></span>
+              <% if (settings.event_dates_active) { %><span style="color:black"><%= settings.event_dates_active %></span><% } %>
             </div>
           </article>
         </aside>
       </section>
 
+      <section
+        class="countdown-card"
+        data-countdown
+        data-countdown-target="<%= settings.countdown_target_active || '2026-11-29T09:00:00+05:30' %>"
+        data-countdown-running-status="<%= settings.timer_running_status_active || 'Timer running for the Venture Capital Hackathon final round on 24 July 2026.' %>"
+      >
+        <div class="countdown-copy">
+          <p class="eyebrow"><%= settings.timer_label_active || 'Hackathon Day Timer' %></p>
+          <h2><%= settings.countdown_title_active || 'Countdown to launch day' %></h2>
+          <p class="countdown-text">
+            <%= settings.countdown_description_active || ('Live timer for the ' + (settings.hackathon_name_active || 'hackathon') + ' final round.') %><% if (settings.event_dates_active) { %> Event dates: <%= settings.event_dates_active %>.<% } %>
+          </p>
+        </div>
+        <div class="countdown-grid">
+          <article class="countdown-unit">
+            <span class="countdown-value" data-countdown-value="days">00</span>
+            <small>Days</small>
+          </article>
+          <article class="countdown-unit">
+            <span class="countdown-value" data-countdown-value="hours">00</span>
+            <small>Hours</small>
+          </article>
+          <article class="countdown-unit">
+            <span class="countdown-value" data-countdown-value="minutes">00</span>
+            <small>Minutes</small>
+          </article>
+          <article class="countdown-unit">
+            <span class="countdown-value" data-countdown-value="seconds">00</span>
+            <small>Seconds</small>
+          </article>
+        </div>
+        <p class="countdown-status" data-countdown-status><%= settings.timer_status_active || 'Countdown loading...' %></p>
+      </section>
+
       <section class="panel-members-section" style="display: flex; justify-content: center; padding: 2rem; margin: 2rem auto; max-width: 1200px;">
-        <img src="/images/panel-members.png" alt="Panel Members" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+        <img src="<%= settings.panel_image_active || '/images/panel-members.png' %>?v=<%= assetVersion %>" alt="Panel Members" style="max-width: 100%; height: auto; border-radius: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
       </section>
 
       <section class="sponsors-card">
         <div class="sponsors-header">
           <p class="eyebrow sponsors-eyebrow">SPONSORS & PARTNERS</p>
           <div class="sponsors-header-flex">
-            <h2>Backing Venture Capital Hackathon 2026</h2>
-            <p class="controls-copy">Our hackathon partners helping power the final round experience.</p>
+            <h2><%= settings.sponsors_heading_active || ('Backing ' + (settings.hackathon_name_active || 'the hackathon')) %></h2>
+            <p class="controls-copy"><%= settings.sponsors_description_active || 'Our hackathon partners helping power the final round experience.' %></p>
           </div>
         </div>
         
         <div style="display: flex; justify-content: center; padding: 2rem 0;">
-          <img src="/images/sponsors.png" alt="Sponsors & Partners" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+          <img src="<%= settings.sponsors_image_active || '/images/sponsors.png' %>?v=<%= assetVersion %>" alt="Sponsors & Partners" style="max-width: 100%; height: auto; border-radius: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
         </div>
       </section>
 
@@ -617,8 +618,8 @@
     <% } %>
 
     <footer class="site-footer">
-      <p>Venture Capital Hackathon 2026 — Malla Reddy University, CSE Department. Organized by StudLyf.</p>
-      <span>&copy; <%= currentYear %> Venture Capital Hackathon · Malla Reddy University</span>
+      <p><%= settings.hackathon_name_active || 'Hackathon' %> — <%= settings.college_name_active || 'College' %>. <%= settings.organised_by_active || 'Organised by' %> <%= settings.college_name_active || 'College' %>. In association with <%= settings.studlyf_name_active || 'Studlyf' %>.</p>
+      <span>&copy; <%= currentYear %> <%= settings.hackathon_name_active || 'Hackathon' %> · <%= settings.college_name_active || 'College' %></span>
     </footer>
 
     <script src="/scripts/app.js?v=<%= assetVersion %>"></script>
